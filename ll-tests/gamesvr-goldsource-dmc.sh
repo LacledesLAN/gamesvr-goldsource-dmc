@@ -154,6 +154,8 @@ should_have 'Metamod comes with ABSOLUTELY NO WARRANTY; for details type' 'MetaM
 should_have 'AMX Mod X comes with ABSOLUTELY NO WARRANTY; for details type' 'AMX Mod X loaded';
 should_have 'Executing AMX Mod X Configuration File' 'AMX Mod X Configuration loaded';
 should_lack 'map change failed:' 'Map was able to load';
+should_lack 'Unable to open logfiles under logs' 'log file directory is writable';
+should_lack 'Logging disabled' 'Logging is enabled'
 
 # Verify server responds to commands
 should_echo "say STARTING COMMAND TESTS" "<Laclede's LAN Deathmatch Classic Freeplay> STARTING COMMAND TESTS";

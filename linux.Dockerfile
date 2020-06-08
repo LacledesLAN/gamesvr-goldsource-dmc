@@ -27,7 +27,8 @@ COPY --chown=GoldSource:root ./ll-tests /app/ll-tests
 # UPDATE USERNAME & ensure permissions
 RUN usermod -l DMC GoldSource &&`
     chmod +x /app/ll-tests/*.sh &&`
-    mkdir -p /app/dmc/logs;
+    mkdir -p /app/dmc/logs &&`
+    chmod 775 /app/dmc/logs;
 
 USER DMC
 

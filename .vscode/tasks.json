@@ -4,11 +4,11 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Build",
+            "label": "Build Docker Image",
             "type": "shell",
-            "command": "docker pull lacledeslan/gamesvr-goldsource; docker build . -f Dockerfile.linux -t lltest/gamesvr-goldsource-dmc --no-cache --build-arg BUILDNODE=$env:computername;",
+            "command": "docker pull lacledeslan/gamesvr-goldsource; docker build . -f linux.Dockerfile -t lltest/gamesvr-goldsource-dmc --no-cache --build-arg BUILDNODE=$env:computername;",
+            "dependsOn": "Download git submodules",
             "group": "build",
-            "identifier": "build-image",
             "problemMatcher": [],
             "promptOnClose": true
         },
@@ -16,7 +16,7 @@
             "label": "Build & Execute Self Tests",
             "type": "shell",
             "command": "docker run -it --rm lltest/gamesvr-goldsource-dmc ./ll-tests/gamesvr-goldsource-dmc.sh;",
-            "dependsOn": "build-image",
+            "dependsOn": "Build Docker Image",
             "group": {
                 "kind": "build",
                 "isDefault": true
@@ -27,8 +27,14 @@
         {
             "label": "Build & Run Interactive Server",
             "type": "shell",
-            "command": "docker run -it --net=host lltest/gamesvr-goldsource-dmc ./hlds_run +sv_lan 1 -game dmc +map dcdm5 +maxplayers 16;",
-            "dependsOn": "build-image",
+            "linux" :{
+                "command": "docker run -it --net=host lltest/gamesvr-goldsource-dmc ./hlds_run +sv_lan 1 -game dmc +map dcdm5 +maxplayers 16;",
+            },
+            "windows": {
+                "command": "$IP=((Get-WmiObject -Class Win32_NetworkAdapterConfiguration | where {$_.DefaultIPGateway -ne $null}).IPAddress | select-object -first 1); docker run -it -p ${IP}:27015:27015/udp -p ${IP}:27015:27015/tcp lltest/gamesvr-goldsource-dmc ./hlds_run +sv_lan 1 -game dmc +map dcdm5 +maxplayers 16;"
+            },
+            "command": "docker run -it -p 27015:27015/tcp -p 27015-27025:27015-27025/udp lltest/gamesvr-goldsource-dmc ./hlds_run +sv_lan 1 -game dmc +map dcdm5 +maxplayers 16;",
+            "dependsOn": "Build Docker Image",
             "group": "build",
             "problemMatcher": [],
             "promptOnClose": true
@@ -36,8 +42,8 @@
         {
             "label": "Build & Shell In",
             "type": "shell",
-            "command": "docker run -it --net=host --rm lltest/gamesvr-goldsource-dmc;",
-            "dependsOn": "build-image",
+            "command": "docker run -it -p 27015:27015/udp --rm lltest/gamesvr-goldsource-dmc;",
+            "dependsOn": "Build Docker Image",
             "group": "build",
             "problemMatcher": [],
             "promptOnClose": true
@@ -46,7 +52,6 @@
             "label": "Download git submodules",
             "type": "shell",
             "command": "git submodule foreach git pull origin master;",
-            "identifier": "download-sub-modules",
             "problemMatcher": [],
             "promptOnClose": true
         },

@@ -15,7 +15,7 @@ before_install:
 
 script:
   - docker version
-  - docker build --no-cache --tag lltest/gamesvr-goldsource-dmc --tag lacledeslan/gamesvr-goldsource-dmc --build-arg BUILDNODE=TravisCI --build-arg SOURCE_COMMIT="$TRAVIS_COMMIT" -f Dockerfile.linux .
+  - docker build --no-cache --tag lltest/gamesvr-goldsource-dmc --tag lacledeslan/gamesvr-goldsource-dmc --build-arg BUILDNODE=TravisCI --build-arg SOURCE_COMMIT="$TRAVIS_COMMIT" -f linux.Dockerfile .
   - docker run -it --rm lltest/gamesvr-goldsource-dmc ./ll-tests/gamesvr-goldsource-dmc.sh
 
 notifications:
