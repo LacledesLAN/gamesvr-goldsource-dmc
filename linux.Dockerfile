@@ -30,6 +30,8 @@ RUN usermod -l DMC GoldSource &&`
     mkdir -p /app/dmc/logs &&`
     chmod 775 /app/dmc/logs;
 
+RUN echo 40 > /app/steam_appid.txt;
+
 USER DMC
 
 WORKDIR /app
