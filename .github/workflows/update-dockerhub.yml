@@ -1,4 +1,4 @@
-name: linux/amd64
+name: Update DockerHub Description
 
 on:
   push:
