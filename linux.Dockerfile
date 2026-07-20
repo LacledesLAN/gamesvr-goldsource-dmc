@@ -1,18 +1,17 @@
-# escape=`
 FROM lacledeslan/gamesvr-goldsource
 
 HEALTHCHECK NONE
 
-ARG BUILDNODE=unspecified
-ARG SOURCE_COMMIT=unspecified
+ARG BUILD_NODE=unspecified
+ARG GIT_REVISION=unspecified
 
-LABEL com.lacledeslan.build-node=$BUILDNODE `
-      org.label-schema.schema-version="1.0" `
-      org.label-schema.url="https://github.com/LacledesLAN/README.1ST" `
-      org.label-schema.vcs-ref=$SOURCE_COMMIT `
-      org.label-schema.vendor="Laclede's LAN" `
-      org.label-schema.description="Laclede's LAN Deathmatch Classic Freeplay Dedicated Server" `
-      org.label-schema.vcs-url="https://github.com/LacledesLAN/gamesvr-goldsource-dmc"
+LABEL architecture="amd64" \
+    com.lacledeslan.build-node="$BUILD_NODE" \
+    maintainer="Laclede's LAN <contact@lacledeslan.com>" \
+    org.opencontainers.image.description="Laclede's LAN Deathmatch Classic Freeplay Dedicated Server" \
+    org.opencontainers.image.revision="$GIT_REVISION" \
+    org.opencontainers.image.source="https://github.com/LacledesLAN/gamesvr-goldsource-dmc" \
+    org.opencontainers.image.vendor="Laclede's LAN"
 
 COPY --chown=GoldSource:root ./amxmodx/metamod/metamod.so /app/dmc/addons/metamod/dlls/metamod.so
 
@@ -25,9 +24,9 @@ COPY --chown=GoldSource:root ./dist /app
 COPY --chown=GoldSource:root ./ll-tests /app/ll-tests
 
 # UPDATE USERNAME & ensure permissions
-RUN usermod -l DMC GoldSource &&`
-    chmod +x /app/ll-tests/*.sh &&`
-    mkdir -p /app/dmc/logs &&`
+RUN usermod -l DMC GoldSource && \
+    chmod +x /app/ll-tests/*.sh && \
+    mkdir -p /app/dmc/logs && \
     chmod 775 /app/dmc/logs;
 
 RUN echo 40 > /app/steam_appid.txt;
