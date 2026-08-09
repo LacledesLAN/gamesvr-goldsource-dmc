@@ -4,9 +4,9 @@ on:
   schedule:
     - cron: '0 9 * * THU'
   push:
-    branches: [ master ]
+    branches: [ main ]
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
 
   repository_dispatch: # Allows action to be triggered via webhook
 
